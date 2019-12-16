@@ -1,0 +1,27 @@
+{
+  "name": "mern-skeleton",
+  "version": "1.0.0",
+  "description": "a mern skeleton to start your project fast",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohammadameer/mern-skeleton.git"
+  },
+  "keywords": [
+    "mern",
+    "react",
+    "node",
+    "express",
+    "mongodb",
+    "skeleton"
+  ],
+  "author": "mohammad ameer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mohammadameer/mern-skeleton/issues"
+  },
+  "homepage": "https://github.com/mohammadameer/mern-skeleton#readme"
+}
