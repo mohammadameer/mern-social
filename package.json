@@ -1,46 +1,51 @@
 {
   "name": "mern-skeleton",
   "version": "1.0.0",
-  "description": "a mern skeleton to start your project fast",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mohammadameer/mern-skeleton.git"
-  },
+  "description": "A MERN stack skeleton web application",
+  "author": "Shama Hoque",
+  "license": "MIT",
   "keywords": [
-    "mern",
     "react",
-    "node",
     "express",
     "mongodb",
-    "skeleton"
+    "node",
+    "mern"
   ],
-  "author": "mohammad ameer",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mohammadameer/mern-skeleton/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamahoque/mern-skeleton.git"
   },
-  "homepage": "https://github.com/mohammadameer/mern-skeleton#readme",
+  "homepage": "https://github.com/shamahoque/mern-skeleton",
+  "main": "./dist/server.generated.js",
+  "scripts": {
+    "development": "nodemon",
+    "build": "webpack --mode=production --config webpack.config.server.js",
+    "start": "NODE_ENV=production node ./dist/server.generated.js"
+  },
+  "engines": {
+    "node": "8.11.1",
+    "npm": "5.8.0"
+  },
   "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/preset-env": "^7.7.6",
-    "babel-loader": "^8.0.6",
-    "nodemon": "^2.0.2",
-    "webpack": "^4.41.3",
-    "webpack-cli": "^3.3.10",
-    "webpack-node-externals": "^1.7.2"
+    "babel-core": "6.26.2",
+    "babel-loader": "7.1.4",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-stage-2": "6.24.1",
+    "nodemon": "1.17.3",
+    "webpack": "4.6.0",
+    "webpack-cli": "2.0.15",
+    "webpack-node-externals": "1.7.2"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.4",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "helmet": "^3.21.2",
-    "mongoose": "^5.8.1"
+    "body-parser": "1.18.2",
+    "compression": "1.7.2",
+    "cookie-parser": "1.4.3",
+    "cors": "2.8.4",
+    "express": "4.16.3",
+    "express-jwt": "5.3.1",
+    "helmet": "3.12.0",
+    "jsonwebtoken": "8.2.1",
+    "lodash": "4.17.10",
+    "mongoose": "5.0.16"
   }
 }

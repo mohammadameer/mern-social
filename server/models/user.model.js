@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
-
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -10,20 +9,20 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     trim: true,
-    unique: "email alraedy exist",
-    match: [/.+\@.+\..+/, "plaeas fill a valid email address"],
-    required: "email is required"
+    unique: true,
+    match: [/.+\@.+\..+/, "Please fill a valid email address"],
+    required: "Email is required"
   },
+  hashed_password: {
+    type: String,
+    required: "Password is required"
+  },
+  salt: String,
+  updated: Date,
   created: {
     type: Date,
     default: Date.now
-  },
-  updated: Date,
-  hashed_password: {
-    type: String,
-    required: "password is requried"
-  },
-  salt: String
+  }
 });
 
 UserSchema.virtual("password")
@@ -35,6 +34,15 @@ UserSchema.virtual("password")
   .get(function() {
     return this._password;
   });
+
+UserSchema.path("hashed_password").validate(function(v) {
+  if (this._password && this._password.length < 6) {
+    this.invalidate("password", "Password must be at least 6 characters.");
+  }
+  if (this.isNew && !this._password) {
+    this.invalidate("password", "Password is required");
+  }
+}, null);
 
 UserSchema.methods = {
   authenticate: function(plainText) {
@@ -55,14 +63,5 @@ UserSchema.methods = {
     return Math.round(new Date().valueOf() * Math.random()) + "";
   }
 };
-
-UserSchema.path("hashed_password").validate(function(v) {
-  if (this._password && this._password.length < 6) {
-    this.invalidate("password", "Password must ve at least 6 characters");
-  }
-  if (this.isNew && !this._password) {
-    this.invalidate("password", "Password is required");
-  }
-}, null);
 
 export default mongoose.model("User", UserSchema);
