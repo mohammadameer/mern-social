@@ -1,8 +1,9 @@
-import { hot } from "react-hot-loader";
+import { hot } from "react-hot-loader/root";
 import React from "react";
 import MainRouter from "./MainRouter";
 import { BrowserRouter } from "react-router-dom";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import { indigo, pink } from "@material-ui/core/colors";
 
 const theme = createMuiTheme({
   palette: {

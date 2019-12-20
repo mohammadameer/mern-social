@@ -5,11 +5,11 @@ import Home from "./core/Home";
 class MainRouter extends Component {
   render() {
     return (
-      <div>
-        <Switch>
-          <Route exact path="/" Component={Home} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+      </Switch>
     );
   }
 }

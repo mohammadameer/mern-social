@@ -21,8 +21,17 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: ["babel-loader"]
+      },
+      {
+        test: /\.(ttf|eot|svg|gif|jpg|png)(\?[\s\S]+)?$/,
+        use: "file-loader"
       }
     ]
+  },
+  resolve: {
+    alias: {
+      "react-dom": "@hot-loader/react-dom"
+    }
   },
   plugins: [new webpack.HotModuleReplacementPlugin()]
 };
