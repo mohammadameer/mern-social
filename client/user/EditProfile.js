@@ -37,6 +37,9 @@ const EditProfile = props => {
       email: state.email || undefined,
       password: state.password || undefined
     };
+
+    use;
+
     update(
       {
         userId

@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import auth from "../auth/auth-helper";
 import { remove } from "./api-user";
+import {
+  IconButton,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog,
+  Button
+} from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
+import propsTypes from "prop-types";
 
 const DeleteUser = props => {
   const [state, setState] = useState({
@@ -8,11 +19,11 @@ const DeleteUser = props => {
     open: false
   });
 
-  toggleDialoge = () => {
+  const toggleDialoge = () => {
     setState({ ...state, open: !state.open });
   };
 
-  submit = () => {
+  const submit = () => {
     const jwt = auth.isAuthenticated();
     remove(
       {
@@ -27,6 +38,36 @@ const DeleteUser = props => {
   };
 
   if (state.redirect) return <Redirect to="/" />;
+
+  return (
+    <span>
+      <IconButton
+        araia-label="Delete"
+        onClick={toggleDialoge}
+        color="secondary"
+      >
+        <Delete />
+      </IconButton>
+      <Dialog open={state.open} onClose={toggleDialoge}>
+        <DialogTitle>{"Delete Account"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Confirm to delete your account</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={toggleDialoge} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={submit} color="secondary" autoFocus="autoFocus">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </span>
+  );
+};
+
+DeleteUser.propTypes = {
+  userId: propsTypes.string.isRequired
 };
 
 export default DeleteUser;

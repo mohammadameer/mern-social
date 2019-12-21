@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import { Person, Edit } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import DeleteUser from "./DeleteUser";
 
 const Profile = props => {
   const [state, setState] = useState({
@@ -70,7 +71,7 @@ const Profile = props => {
                       <Edit />
                     </IconButton>
                   </Link>
-                  {/* <DeleteUser userId={state.user._id} /> */}
+                  <DeleteUser userId={state.user._id} />
                 </ListItemSecondaryAction>
               )}
           </ListItem>
