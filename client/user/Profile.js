@@ -28,7 +28,7 @@ const Profile = props => {
 
   useEffect(() => {
     init(userId);
-  }, [state.user]);
+  }, []);
 
   const init = userId => {
     const jwt = auth.isAuthenticated();
@@ -71,7 +71,10 @@ const Profile = props => {
                       <Edit />
                     </IconButton>
                   </Link>
-                  <DeleteUser userId={state.user._id} />
+                  <DeleteUser
+                    user={{ name: state.user.name, email: state.user.email }}
+                    userId={state.user._id}
+                  />
                 </ListItemSecondaryAction>
               )}
           </ListItem>

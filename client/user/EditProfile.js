@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import auth from "../auth/auth-helper";
-import { update } from "./api-user";
+import { update, read } from "./api-user";
 import { SentimentSatisfied } from "@material-ui/icons";
 import { Redirect, useParams } from "react-router";
 import {
@@ -30,15 +30,25 @@ const EditProfile = props => {
     setState({ ...state, [name]: event.target.value });
   };
 
+  const jwt = auth.isAuthenticated();
+  useEffect(() => {
+    read(
+      {
+        userId
+      },
+      { t: jwt.token }
+    ).then(user => {
+      console.log(user);
+      setState({ ...state, name: user.name, email: user.email });
+    });
+  }, []);
+
   const submit = () => {
-    const jwt = auth.isAuthenticated();
     const user = {
       name: state.name || undefined,
       email: state.email || undefined,
       password: state.password || undefined
     };
-
-    use;
 
     update(
       {
