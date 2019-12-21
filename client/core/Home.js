@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Card, Typography, CardContent, CardMedia } from "@material-ui/core";
 
 import seashellImg from "../assets/images/seashell.png";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   card: {
@@ -26,6 +27,8 @@ class Home extends Component {
     const { classes } = this.props;
     return (
       <div>
+        <Link to="/users">got to users</Link>
+        <Link to="/signup">got to signup</Link>
         <Card className={classes.card}>
           <Typography type="headline" component="h2" className={classes.title}>
             Home Page

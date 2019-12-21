@@ -22,7 +22,7 @@ const list = () => {
 };
 
 const read = (params, credentials) => {
-  return fetch("/api/users/" + params.userId, {
+  return fetch("/api/user/" + params.userId, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -35,7 +35,7 @@ const read = (params, credentials) => {
 };
 
 const update = (params, credentials, user) => {
-  return fetch("/api/users/" + params.userId, {
+  return fetch("/api/user/" + params.userId, {
     method: "PUT",
     headers: {
       Accept: "application/json",
@@ -49,7 +49,7 @@ const update = (params, credentials, user) => {
 };
 
 const remove = (params, credentials) => {
-  return fetch("/api/users/" + params.userId, {
+  return fetch("/api/user/" + params.userId, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
@@ -61,4 +61,4 @@ const remove = (params, credentials) => {
     .catch(err => console.error(err));
 };
 
-export { create, list, update, remove };
+export { create, list, read, update, remove };

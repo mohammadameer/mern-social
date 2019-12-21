@@ -26,13 +26,13 @@ app.use(helmet());
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.status(200).send(Template());
-});
-
 // mount routes
 app.use("/", userRoutes);
 app.use("/", authRoutes);
+
+app.get("/*", (req, res) => {
+  res.status(200).send(Template());
+});
 
 // Catch unauthorised errors
 app.use((err, req, res, next) => {
