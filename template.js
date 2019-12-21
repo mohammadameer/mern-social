@@ -3,6 +3,7 @@ export default () => {
       <html lang="en">
         <head>
           <meta charset="utf-8">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <title>MERN Skeleton</title>
