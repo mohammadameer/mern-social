@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import propsTypes from "prop-types";
+import { Redirect } from "react-router";
 
 const DeleteUser = props => {
   const [state, setState] = useState({
