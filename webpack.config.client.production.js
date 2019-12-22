@@ -4,12 +4,12 @@ const nodeExternals = require("webpack-node-externals");
 const CURRENT_WORKING_DIR = process.cwd();
 
 module.exports = {
-  entry: [path.join(CURRENT_WORKING_DIR, "./server/server")],
-  targer: "node",
+  entry: [path.join(CURRENT_WORKING_DIR, "./client/main.js")],
+  target: "node",
   output: {
     path: path.join(CURRENT_WORKING_DIR, "/dist/"),
-    filename: "server.generated.js",
-    publickPath: "/dist/",
+    filename: "bundle.js",
+    publicPath: "/dist/",
     libraryTarget: "commonjs2"
   },
   externals: [nodeExternals()],
@@ -19,6 +19,10 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: ["babel-loader"]
+      },
+      {
+        test: /\.(ttf|eot|svg|gif|jpg|png)(\?[\s\S]+)?$/,
+        use: "file-loader"
       }
     ]
   }

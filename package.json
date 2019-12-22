@@ -19,7 +19,7 @@
   "main": "./dist/server.generated.js",
   "scripts": {
     "development": "nodemon",
-    "build": "webpack --mode=production --config webpack.config.server.js",
+    "build": "webpack --mode=production --config webpack.config.server.js && webpack --mode=production --config webpack.config.client.production.js",
     "start": "NODE_ENV=production node ./dist/server.generated.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
