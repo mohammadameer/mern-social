@@ -5,14 +5,11 @@ const CURRENT_WORKING_DIR = process.cwd();
 
 module.exports = {
   entry: [path.join(CURRENT_WORKING_DIR, "./client/main.js")],
-  target: "node",
   output: {
     path: path.join(CURRENT_WORKING_DIR, "/dist/"),
     filename: "bundle.js",
-    publicPath: "/dist/",
-    libraryTarget: "commonjs2"
+    publicPath: "/dist/"
   },
-  externals: [nodeExternals()],
   module: {
     rules: [
       {

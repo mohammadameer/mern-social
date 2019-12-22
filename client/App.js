@@ -1,4 +1,3 @@
-import { hot } from "react-hot-loader/root";
 import React from "react";
 import MainRouter from "./MainRouter";
 import { BrowserRouter } from "react-router-dom";
@@ -33,4 +32,4 @@ const App = () => (
   </BrowserRouter>
 );
 
-export default hot(App);
+export default App;
