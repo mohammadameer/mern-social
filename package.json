@@ -15,12 +15,14 @@
     "type": "git",
     "url": "https://github.com/shamahoque/mern-skeleton.git"
   },
-  "homepage": "https://github.com/shamahoque/mern-skeleton",
+  "homepage": "https://mohammadameer.github.io/mern-skeleton",
   "main": "./dist/server.generated.js",
   "scripts": {
     "development": "nodemon",
     "build": "webpack --mode=production --config webpack.config.server.js",
-    "start": "NODE_ENV=production node ./dist/server.generated.js"
+    "start": "NODE_ENV=production node ./dist/server.generated.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "engines": {
     "node": "8.11.1",
@@ -58,6 +60,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-jwt": "^5.3.1",
+    "gh-pages": "^2.1.1",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
