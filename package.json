@@ -23,7 +23,7 @@
     "start": "NODE_ENV=production node ./dist/server.generated.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "heroku-postbuild": "build"
+    "heroku-postbuild": "npm run build"
   },
   "engines": {
     "node": "8.11.1",
