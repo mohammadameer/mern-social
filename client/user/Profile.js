@@ -45,6 +45,10 @@ const Profile = props => {
 
   const { classes } = props;
   const redirectToSignin = state.redirectToSignin;
+  const photoUrl = this.state.user._id
+    ? `/api/users/photo/${state.user._id}?${new Date().getTime()}`
+    : "/api/users/defaultphoto";
+
   if (redirectToSignin) return <Redirect to="/signin" />;
   return (
     <div>
@@ -55,9 +59,7 @@ const Profile = props => {
         <List dense>
           <ListItem>
             <ListItemAvatar>
-              <Avatar>
-                <Person />
-              </Avatar>
+              <Avatar src={photoUrl} />
             </ListItemAvatar>
             <ListItemText
               primary={state.user.name}
@@ -79,6 +81,9 @@ const Profile = props => {
               )}
           </ListItem>
           <Divider />
+          <ListItem>
+            <ListItemText primary={state.user.about} />
+          </ListItem>
           <ListItem>
             <ListItemText
               primary={"joined: " + new Date(state.user.created).toDateString()}

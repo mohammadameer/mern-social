@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import auth from "../auth/auth-helper";
 import { update, read } from "./api-user";
-import { SentimentSatisfied } from "@material-ui/icons";
+import { SentimentSatisfied, CloudUpload } from "@material-ui/icons";
 import { Redirect, useParams } from "react-router";
 import {
   Card,
@@ -18,16 +18,23 @@ const EditProfile = props => {
   const [state, setState] = useState({
     name: "",
     email: "",
+    about: "",
+    photo: "",
     password: "",
     error: "",
     redirectToProfile: false,
     userId: ""
   });
 
+  let userData = new FormData();
+
   const { userId } = useParams();
 
   const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.value });
+    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    userData.set(name, value);
+    setState({ ...state, [name]: value });
+    console.log(state);
   };
 
   const jwt = auth.isAuthenticated();
@@ -46,6 +53,7 @@ const EditProfile = props => {
   const submit = () => {
     const user = {
       name: state.name || undefined,
+      about: state.aboute || undefined,
       email: state.email || undefined,
       password: state.password || undefined
     };
@@ -72,12 +80,38 @@ const EditProfile = props => {
         <Typography type="headline" component="h2" className={classes.title}>
           Update Profile
         </Typography>
+        <input
+          accept="image/*"
+          type="file"
+          className={classes.input}
+          onChange={handleChange("photo")}
+          style={{ display: "none" }}
+          id="icon-button-file"
+        />
+        <label htmlFor="icon-button-file">
+          <Button variant="raised" color="default" component="span">
+            Upload <CloudUpload />
+          </Button>
+        </label>
+        <span className={classes.filename}>
+          {state.photo ? state.photo.name : ""}
+        </span>
         <TextField
           id="name"
           label="name"
           className={classes.textField}
           value={state.name}
           onChange={handleChange("name")}
+          margin="normal"
+        />
+        <TextField
+          id="about"
+          label="About"
+          multiline
+          rows="2"
+          className={classes.textField}
+          value={state.about}
+          onChange={handleChange("about")}
           margin="normal"
         />
         <TextField
@@ -143,7 +177,17 @@ const styles = theme => ({
   submit: {
     margin: "auto",
     marginBottom: theme.spacing.unit * 2
+  },
+  bigAvatar: {
+    width: 60,
+    height: 60,
+    margin: "auto"
+  },
+  input: {
+    display: "none"
+  },
+  filename: {
+    marginLeft: "10px"
   }
 });
-
 export default withStyles(styles)(EditProfile);
