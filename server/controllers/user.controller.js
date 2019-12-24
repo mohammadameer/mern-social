@@ -4,7 +4,7 @@ import errorHandler from "./../helpers/dbErrorHandler";
 import formidable from "formidable";
 import fs from "fs";
 
-import profileImage from "../../client/assets/images/profile-pic.png";
+import profileImage from "../../client/assets/images/seashell.png";
 
 const create = (req, res, next) => {
   const user = new User(req.body);
@@ -24,14 +24,17 @@ const create = (req, res, next) => {
  * Load user and append to req.
  */
 const userByID = (req, res, next, id) => {
-  User.findById(id).exec((err, user) => {
-    if (err || !user)
-      return res.status("400").json({
-        error: "User not found"
-      });
-    req.profile = user;
-    next();
-  });
+  User.findById(id)
+    .populate("following", "_id name")
+    .populate("followers", "_id name")
+    .exec((err, user) => {
+      if (err || !user)
+        return res.status("400").json({
+          error: "User not found"
+        });
+      req.profile = user;
+      next();
+    });
 };
 
 const read = (req, res) => {
@@ -55,18 +58,20 @@ const update = (req, res, next) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.parse(req, (err, fields, files) => {
-    if (err)
-      return res.status(400).json({ error: "Photo could not be uploade" });
-
+    if (err) {
+      return res.status(400).json({
+        error: "Photo could not be uploaded"
+      });
+    }
     let user = req.profile;
-    user = extend(user, req.body);
+    user = extend(user, fields);
     user.updated = Date.now();
     if (files.photo) {
-      user.photo = fs.readFileSync(files.photo.path);
+      user.photo.data = fs.readFileSync(files.photo.path);
       user.photo.contentType = files.photo.type;
     }
-
-    user.save(err => {
+    console.log(user.photo);
+    user.save((err, result) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler.getErrorMessage(err)
@@ -77,6 +82,73 @@ const update = (req, res, next) => {
       res.json(user);
     });
   });
+};
+
+const addFollowing = (req, res, next) => {
+  User.findByIdAndUpdate(
+    req.body.userId,
+    { $push: { following: req.body.followId } },
+    (err, result) => {
+      if (err)
+        return res.status(400).json({
+          error: errorHandler.getErrorMessage(err)
+        });
+      next();
+    }
+  );
+};
+
+const addFollower = (req, res) => {
+  User.findByIdAndUpdate(
+    req.body.followId,
+    {
+      $push: { followers: req.body.userId }
+    },
+    { new: true }
+  )
+    .populate("following", "_id name")
+    .populate("followers", "_id name")
+    .exec((err, result) => {
+      if (err)
+        return res.status(400).json({
+          error: errorHandler.getErrorMessage(err)
+        });
+
+      result.hashed_password = undefined;
+      result.salt = undefined;
+      console.log(result);
+      res.json(result);
+    });
+};
+
+const removeFollowing = (req, res, next) => {
+  User.findByIdAndUpdate(
+    req.body.userId,
+    { $pull: { following: req.body.unfollowId } },
+    (err, result) => {
+      if (err)
+        return res.status(400).json({
+          error: errorHandler.getErrorMessage(err)
+        });
+      next();
+    }
+  );
+};
+
+const removeFollower = (req, res) => {
+  User.findByIdAndUpdate(
+    req.body.unfollowId,
+    { $pull: { followers: req.body.userId } },
+    { new: true }
+  )
+    .populate("following", "_id name")
+    .populate("followers", "_id name")
+    .exec((err, result) => {
+      if (err)
+        res.status(400).json({
+          error: errorHandler.getErrorMessage(err)
+        });
+    });
 };
 
 const remove = (req, res, next) => {
@@ -113,5 +185,9 @@ export default {
   remove,
   update,
   photo,
-  defaultPhoto
+  defaultPhoto,
+  addFollowing,
+  addFollower,
+  removeFollowing,
+  removeFollower
 };

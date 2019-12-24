@@ -34,6 +34,38 @@ const read = (params, credentials) => {
     .catch(err => console.error(err));
 };
 
+const follow = (params, credentials, followId) => {
+  return fetch("/api/users/follow/", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + credentials.t
+    },
+    body: JSON.stringify({ userId: params.userId, followId: followId })
+  })
+    .then(response => response.json())
+    .catch(err => console.error(err));
+};
+
+const unfollow = (params, credentials, unfollowId) => {
+  return fetch("/api/users/unfollow/", {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + credentials.t
+    },
+    body: JSON.stringify({ userId: params.userId, unfollowId: unfollowId })
+  })
+    .then(response => {
+      return response.json();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 const update = (params, credentials, user) => {
   return fetch("/api/user/" + params.userId, {
     method: "PUT",
@@ -41,7 +73,7 @@ const update = (params, credentials, user) => {
       Accept: "application/json",
       Authorization: "Bearer " + credentials.t
     },
-    body: JSON.stringify(user)
+    body: user
   })
     .then(response => response.json())
     .catch(err => console.error(err));
@@ -60,4 +92,4 @@ const remove = (params, credentials) => {
     .catch(err => console.error(err));
 };
 
-export { create, list, read, update, remove };
+export { create, list, read, update, remove, follow, unfollow };

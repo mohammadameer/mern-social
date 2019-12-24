@@ -26,15 +26,12 @@ const EditProfile = props => {
     userId: ""
   });
 
-  let userData = new FormData();
-
   const { userId } = useParams();
 
+  let userData = new FormData();
   const handleChange = name => event => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
-    userData.set(name, value);
     setState({ ...state, [name]: value });
-    console.log(state);
   };
 
   const jwt = auth.isAuthenticated();
@@ -45,27 +42,35 @@ const EditProfile = props => {
       },
       { t: jwt.token }
     ).then(user => {
-      console.log(user);
-      setState({ ...state, name: user.name, email: user.email });
+      setState({
+        ...state,
+        name: user.name,
+        email: user.email,
+        about: user.about
+      });
     });
   }, []);
 
   const submit = () => {
     const user = {
       name: state.name || undefined,
-      about: state.aboute || undefined,
+      about: state.about || undefined,
       email: state.email || undefined,
-      password: state.password || undefined
+      photo: state.photo || undefined
     };
-
+    var userData = new FormData();
+    for (let name in user) {
+      userData.append(name, user[name]);
+    }
+    console.log(...userData);
     update(
       {
         userId
       },
       { t: jwt.token },
-      user
+      userData
     ).then(data => {
-      if (data.error) SentimentSatisfied({ ...state, error: error });
+      if (data.error) setState({ ...state, error: data.error });
       else setState({ ...state, userId: data._id, redirectToProfile: true });
     });
   };
@@ -73,29 +78,30 @@ const EditProfile = props => {
   if (state.redirectToProfile) return <Redirect to={"/user/" + state.userId} />;
 
   const { classes } = props;
-
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography type="headline" component="h2" className={classes.title}>
           Update Profile
         </Typography>
-        <input
-          accept="image/*"
-          type="file"
-          className={classes.input}
-          onChange={handleChange("photo")}
-          style={{ display: "none" }}
-          id="icon-button-file"
-        />
-        <label htmlFor="icon-button-file">
-          <Button variant="raised" color="default" component="span">
-            Upload <CloudUpload />
-          </Button>
-        </label>
-        <span className={classes.filename}>
-          {state.photo ? state.photo.name : ""}
-        </span>
+        <div>
+          <input
+            accept="image/*"
+            type="file"
+            className={classes.input}
+            onChange={handleChange("photo")}
+            style={{ display: "none" }}
+            id="icon-button-file"
+          />
+          <label htmlFor="icon-button-file">
+            <Button variant="raised" color="default" component="span">
+              Upload <CloudUpload />
+            </Button>
+          </label>
+          <span className={classes.filename}>
+            {state.photo ? state.photo.name : ""}
+          </span>
+        </div>
         <TextField
           id="name"
           label="name"

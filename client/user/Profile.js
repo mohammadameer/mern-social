@@ -18,34 +18,60 @@ import {
 import { Person, Edit } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import DeleteUser from "./DeleteUser";
+import FollowProfileButton from "./FollowProfileButton";
+import ProfileTabs from "./ProfileTabs";
 
 const Profile = props => {
   const [state, setState] = useState({
     user: "",
+    following: false,
     redirectToSignin: false
   });
   const { userId } = useParams();
+  const jwt = auth.isAuthenticated();
+
+  const checkFollow = user => {
+    const match = user.followers.find(follower => {
+      return follower._id == jwt.user._id;
+    });
+    return match;
+  };
 
   useEffect(() => {
     init(userId);
-  }, []);
+  }, [userId]);
 
   const init = userId => {
-    const jwt = auth.isAuthenticated();
     read(
       {
         userId
       },
       { t: jwt.token }
     ).then(data => {
-      if (data.error) setState({ redirectToSignin: true });
-      else setState({ user: data });
+      if (data.error) return setState({ redirectToSignin: true });
+      let following = checkFollow(data);
+      setState({ user: data, following });
+    });
+  };
+
+  const clickFollowButton = callApi => {
+    callApi(
+      {
+        userId: jwt.user._id
+      },
+      {
+        t: jwt.token
+      },
+      state.user._id
+    ).then(data => {
+      if (data.error) return setState({ ...state, error: data.error });
+      else setState({ ...state, user: data, following: !state.following });
     });
   };
 
   const { classes } = props;
   const redirectToSignin = state.redirectToSignin;
-  const photoUrl = this.state.user._id
+  const photoUrl = state.user._id
     ? `/api/users/photo/${state.user._id}?${new Date().getTime()}`
     : "/api/users/defaultphoto";
 
@@ -66,19 +92,24 @@ const Profile = props => {
               secondary={state.user.email}
             />
             {auth.isAuthenticated().user &&
-              auth.isAuthenticated().user._id == state.user._id && (
-                <ListItemSecondaryAction>
-                  <Link to={"/user/edit/" + state.user._id}>
-                    <IconButton color="primary">
-                      <Edit />
-                    </IconButton>
-                  </Link>
-                  <DeleteUser
-                    user={{ name: state.user.name, email: state.user.email }}
-                    userId={state.user._id}
-                  />
-                </ListItemSecondaryAction>
-              )}
+            auth.isAuthenticated().user._id == state.user._id ? (
+              <ListItemSecondaryAction>
+                <Link to={"/user/edit/" + state.user._id}>
+                  <IconButton color="primary">
+                    <Edit />
+                  </IconButton>
+                </Link>
+                <DeleteUser
+                  user={{ name: state.user.name, email: state.user.email }}
+                  userId={state.user._id}
+                />
+              </ListItemSecondaryAction>
+            ) : (
+              <FollowProfileButton
+                following={state.following}
+                onButtonClick={clickFollowButton}
+              />
+            )}
           </ListItem>
           <Divider />
           <ListItem>
@@ -90,6 +121,7 @@ const Profile = props => {
             />
           </ListItem>
         </List>
+        <ProfileTabs user={state.user} />
       </Paper>
     </div>
   );

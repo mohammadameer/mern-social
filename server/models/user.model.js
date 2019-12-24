@@ -18,13 +18,25 @@ const UserSchema = new mongoose.Schema({
     trim: true
   },
   photo: {
-    type: Buffer,
+    data: Buffer,
     contentType: String
   },
   hashed_password: {
     type: String,
     required: "Password is required"
   },
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
   salt: String,
   updated: Date,
   created: {

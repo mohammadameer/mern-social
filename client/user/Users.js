@@ -35,7 +35,7 @@ const Users = props => {
   }, []);
 
   const { classes } = props;
-
+  console.log(users);
   return (
     <Paper className={classes.root} elevation={4}>
       <Typography type="title" className={classes.title}>
