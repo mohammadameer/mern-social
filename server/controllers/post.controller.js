@@ -133,13 +133,16 @@ const comment = (req, res) => {
     req.body.postId,
     { $push: { comments: comment } },
     { new: true }
-  ).exec((err, result) => {
-    if (err)
-      return res.status(400).json({
-        error: dbErrorHandler.getErrorMessage(err)
-      });
-    res.json(result);
-  });
+  )
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err)
+        return res.status(400).json({
+          error: dbErrorHandler.getErrorMessage(err)
+        });
+      res.json(result);
+    });
 };
 
 const uncomment = (req, res) => {

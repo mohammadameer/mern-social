@@ -38,6 +38,7 @@ const Comments = props => {
       </span>
     </p>
   );
+  console.log(props);
 
   const addComment = event => {
     if (event.keyCode === 13 && event.target.value) {

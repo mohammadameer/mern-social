@@ -40,6 +40,7 @@ const NewsFedd = () => {
     ).then(data => {
       if (data.error) return console.log(data.error);
       setState({ ...state, posts: data });
+      console.log(data);
     });
   };
 
