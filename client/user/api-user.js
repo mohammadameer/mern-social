@@ -79,6 +79,19 @@ const update = (params, credentials, user) => {
     .catch(err => console.error(err));
 };
 
+const findPeople = (params, credentials) => {
+  return fetch("/api/users/findpeople/" + params.userId, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + credentials.t
+    }
+  })
+    .then(response => response.json())
+    .catch(err => console.error(err));
+};
+
 const remove = (params, credentials) => {
   return fetch("/api/user/" + params.userId, {
     method: "DELETE",
@@ -92,4 +105,4 @@ const remove = (params, credentials) => {
     .catch(err => console.error(err));
 };
 
-export { create, list, read, update, remove, follow, unfollow };
+export { create, list, read, update, remove, follow, unfollow, findPeople };

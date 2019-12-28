@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Tabs, Tab, AppBar, TabP } from "@material-ui/core";
 import FollowGrid from "./FollowGrid";
+import NewsFeed from "../post/NewsFeed";
 
 const ProfileTabs = props => {
   const [tab, setTab] = useState(0);
@@ -24,6 +25,7 @@ const ProfileTabs = props => {
           <Tab label="Follower" />
         </Tabs>
       </AppBar>
+      {tab == 0 && <NewsFeed />}
       {tab == 1 && <FollowGrid people={props.user.following} />}
       {tab == 2 && <FollowGrid people={props.user.followers} />}
     </div>

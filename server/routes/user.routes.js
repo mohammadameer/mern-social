@@ -16,6 +16,10 @@ router
   .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove);
 
 router
+  .route("/api/users/findpeople/:userId")
+  .get(authCtrl.requireSignin, userCtrl.findPeople);
+
+router
   .route("/api/users/follow")
   .put(authCtrl.requireSignin, userCtrl.addFollowing, userCtrl.addFollower);
 

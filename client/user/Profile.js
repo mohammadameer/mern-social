@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import auth from "../auth/auth-helper";
 import { read } from "./api-user";
+import { listByUser } from "../post/api-post";
 import { Redirect, useParams } from "react-router";
 import {
   Paper,
@@ -35,6 +36,20 @@ const Profile = props => {
       return follower._id == jwt.user._id;
     });
     return match;
+  };
+
+  const loadPosts = user => {
+    listByUser(
+      {
+        userId: jwt.user._id
+      },
+      {
+        t: jwt.token
+      }
+    ).then(data => {
+      if (data.error) return console.error(data.error);
+      setState({ posts: data });
+    });
   };
 
   useEffect(() => {
